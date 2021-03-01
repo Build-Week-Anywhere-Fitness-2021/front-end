@@ -12,27 +12,73 @@ function Register() {
         type: "",
         auth: ""
     }
+
+    const defaultErrors = {
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        type: "",
+        auth: ""
+    }
     
     const [formData, setFormData] = useState(defaultData)
+    const [formErrors, setFormErrors] = useState(defaultErrors)
     const [submitDisabled, setSubmitDisabled] = useState(false)
     const [authRequired, setAuthRequired] = useState(false)
 
     const schema = yup.object().shape({
-        username: yup.string().required().min(2),
-        email: yup.string().required().email(true),
-        password: yup.string().required(),
-        confirmPassword: yup.string().required().oneOf([formData.password]),
-        type: yup.string().oneOf(["1","2"]).required(),
-        auth: yup.string()
+        username: yup
+            .string()
+            .required("Please choose a username")
+            .min(2, "Usernames must be at least 2 characters long"),
+        email: yup
+            .string()
+            .required("Please enter an email")
+            .email("Please enter a valid email address"),
+        password: yup
+            .string()
+            .required("Please choose a password")
+            .min(8, "Passwords must be at least 8 characters long"),
+        confirmPassword: yup
+            .string()
+            .required("Please confirm the password")
+            .oneOf([formData.password],"The passwords don't match"),
+        type: yup
+            .string()
+            .oneOf(["1","2"], "Please choose an account type")
+            .required("Please choose an account type"),
+        auth: yup
+            .string()
+            .required("Please enter your Auth Code to create an instructor account")
+            // .min(4, "Instructor Auth Codes are at least 4 characters long")
     })
+
+    const updateErrors = (name, value) => {
+        yup.reach(schema, name).validate(value)
+            .then(() => setFormErrors({...formErrors, [name]: ""}))
+            // .catch((error) => console.log(error.errors[0]))
+            .catch((error) => setFormErrors({...formErrors, [name]: error.errors[0]}))
+    }
 
     const change = event => {
         const { value, name } = event.target
-        console.log(event.target.value)
+        if (name === "type") {updateAuth(value)}
+        updateErrors(name, value)
         setFormData({
             ...formData,
             [name]: value
         })
+    }
+
+    const updateAuth = (value) => {
+        if (value === "1") {
+            setAuthRequired(true)
+            console.log("Auth value TRUE")
+        } else {
+            setAuthRequired(false)
+            console.log("Auth value FALSE")
+        }
     }
 
     const submit = event => {
@@ -48,6 +94,25 @@ function Register() {
         schema.isValid(formData).then(validSchema => setSubmitDisabled(!validSchema))
     }, [formData])
 
+    useEffect(() => {
+        if (authRequired) {
+            // schema = instructorSchema
+        } else {
+            // schema = studentSchema
+        }
+    }, [authRequired])
+
+    // const Field = (id, type, label) => {
+    //     return (
+    //         <div>
+    //             <label for={id}>Username</label>
+    //             <br></br>
+    //             <input name={id} id={id} type={type} onChange={change} value={formData.id}/>
+    //             <br></br>
+    //             <br></br>
+    //         </div>
+    //     )
+    // }
 
     return (
         <div>
@@ -55,26 +120,28 @@ function Register() {
                 <label for="username">Username</label>
                 <br></br>
                 <input name="username" id="username" type="text" onChange={change} value={formData.username}/>
+                <p style={{color: "red"}}>{formErrors.username}</p>
                 <br></br>
-                <br></br>
+
+                {/* <Field id="username" type="text" label="Username"> */}
 
 
                 <label for="email">Email</label>
                 <br></br>
                 <input name="email" id="email" type="email" onChange={change} value={formData.email}/>
-                <br></br>
+                <p style={{color: "red"}}>{formErrors.email}</p>
                 <br></br>
 
                 <label for="password">Password</label>
                 <br></br>
                 <input name="password" id="password" type="password" onChange={change} value={formData.password}/>
-                <br></br>
+                <p style={{color: "red"}}>{formErrors.password}</p>
                 <br></br>
 
                 <label for="confirmPassword">Confirm Password</label>
                 <br></br>
                 <input name="confirmPassword" id="confirmPassword" type="password" onChange={change} value={formData.confirmPassword}/>
-                <br></br>
+                <p style={{color: "red"}}>{formErrors.confirmPassword}</p>
                 <br></br>
 
                 <label for="type">Account Type</label>
@@ -84,14 +151,14 @@ function Register() {
                     <option value="1">Instructor</option>
                     <option value="2">Student</option>
                 </select>
-                <br></br>
+                <p style={{color: "red"}}>{formErrors.type}</p>
                 <br></br>
                 
                 
                 <label for="auth">Instructor Auth Code</label>
                 <br></br>
                 <input name="auth" id="auth" type="text" onChange={change} value={formData.auth}/>
-                <br></br>
+                <p style={{color: "red"}}>{formErrors.auth}</p>
                 <br></br>
 
                 <input type="submit" onSubmit={submit}/>
