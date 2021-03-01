@@ -21,11 +21,17 @@ function Register() {
         type: "",
         auth: ""
     }
+
     
+
+    
+
     const [formData, setFormData] = useState(defaultData)
     const [formErrors, setFormErrors] = useState(defaultErrors)
     const [submitDisabled, setSubmitDisabled] = useState(false)
     const [authRequired, setAuthRequired] = useState(false)
+
+    const authReqSchema = yup.string().required("You need an auth code to create an instructor account")
 
     const schema = yup.object().shape({
         username: yup
@@ -50,8 +56,7 @@ function Register() {
             .required("Please choose an account type"),
         auth: yup
             .string()
-            .required("Please enter your Auth Code to create an instructor account")
-            // .min(4, "Instructor Auth Codes are at least 4 characters long")
+            .concat( authRequired ? authReqSchema : null)
     })
 
     const updateErrors = (name, value) => {
@@ -93,13 +98,13 @@ function Register() {
         schema.isValid(formData).then(validSchema => setSubmitDisabled(!validSchema))
     }, [formData])
 
-    useEffect(() => {
-        if (authRequired) {
-            // schema = instructorSchema
-        } else {
-            // schema = studentSchema
-        }
-    }, [authRequired])
+    // useEffect(() => {
+    //     if (authRequired) {
+    //         setSchema(instructorSchema)
+    //     } else {
+    //         setSchema(studentSchema)
+    //     }
+    // }, [authRequired])
 
     // const Field = (id, type, label) => {
     //     return (
@@ -153,12 +158,14 @@ function Register() {
                 <p style={{color: "red"}}>{formErrors.type}</p>
                 <br></br>
                 
+                <div style={{ display: authRequired ? "block" : "none" }}>
+                    <label for="auth">Auth Code (only for instructors)</label>
+                    <br></br>
+                    <input name="auth" id="auth" type="text" onChange={change} value={formData.auth}/>
+                    <p style={{color: "red"}}>{formErrors.auth}</p>
+                    <br></br>
+                </div>
                 
-                <label for="auth">Instructor Auth Code</label>
-                <br></br>
-                <input name="auth" id="auth" type="text" onChange={change} value={formData.auth}/>
-                <p style={{color: "red"}}>{formErrors.auth}</p>
-                <br></br>
 
                 <input type="submit" onSubmit={submit} disabled={submitDisabled}/>
 
