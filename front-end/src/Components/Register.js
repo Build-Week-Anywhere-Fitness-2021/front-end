@@ -90,7 +90,6 @@ function Register() {
     }
 
     useEffect(() => {
-        schema.isValid(formData).then(isSchemaValid => console.log(isSchemaValid))
         schema.isValid(formData).then(validSchema => setSubmitDisabled(!validSchema))
     }, [formData])
 
@@ -161,7 +160,7 @@ function Register() {
                 <p style={{color: "red"}}>{formErrors.auth}</p>
                 <br></br>
 
-                <input type="submit" onSubmit={submit}/>
+                <input type="submit" onSubmit={submit} disabled={submitDisabled}/>
 
             </form>
 
