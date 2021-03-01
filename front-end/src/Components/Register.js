@@ -1,4 +1,5 @@
 import { React, useState, useEffect }  from "react";
+import * as yup from "yup";
 
 
 function Register() {
@@ -13,6 +14,17 @@ function Register() {
     }
     
     const [formData, setFormData] = useState(defaultData)
+    const [submitDisabled, setSubmitDisabled] = useState(false)
+    const [authRequired, setAuthRequired] = useState(false)
+
+    const schema = yup.object().shape({
+        username: yup.string().required().min(2),
+        email: yup.string().required().email(true),
+        password: yup.string().required(),
+        confirmPassword: yup.string().required().oneOf([formData.password]),
+        type: yup.string().oneOf(["1","2"]).required(),
+        auth: yup.string()
+    })
 
     const change = event => {
         const { value, name } = event.target
@@ -25,12 +37,17 @@ function Register() {
 
     const submit = event => {
         event.preventDefault()
+        //Do something with the data
+        console.log(formData)
+        //Temporary clear
         setFormData(defaultData)
     }
 
     useEffect(() => {
-        console.log(formData)
+        schema.isValid(formData).then(isSchemaValid => console.log(isSchemaValid))
+        schema.isValid(formData).then(validSchema => setSubmitDisabled(!validSchema))
     }, [formData])
+
 
     return (
         <div>
@@ -69,7 +86,8 @@ function Register() {
                 </select>
                 <br></br>
                 <br></br>
-
+                
+                
                 <label for="auth">Instructor Auth Code</label>
                 <br></br>
                 <input name="auth" id="auth" type="text" onChange={change} value={formData.auth}/>
