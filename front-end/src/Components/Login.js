@@ -1,15 +1,27 @@
 import React from 'react';
 import {useState} from 'react'
 
-
+const initialValues = {
+        username: "",
+        password: "",
+        role: "",
+    }
 
 function Login() {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-   
-    const validateForm = () => {
-        return username.length > 0 && password.length > 0;
+    const [formValues, setFormValues] = useState(initialValues);
+  
+    const inputChange = (name, value) => {
+        setFormValues({
+            
+            [name]: value
+        })
     }
+    const handleChange = e => {
+        const {name, value} = e.target;
+        inputChange(name, value)
+
+    }
+    
     const onSubmit = e => {
         e.preventDefault()
     }
@@ -25,40 +37,40 @@ function Login() {
                     <label>Username
                         <input name='name'
                             type='text'
-                            value={username}
+                            value={formValues.username}
                             placeholder='username..'
-                            onChange={ (e) => setUsername(e.target.value)}
+                            onChange={handleChange}
                         />
                     </label><br />
                     
                     <label>Password
                         <input name='password'
                             type='password'
-                            value={password}
+                            value={formValues.password}
                             placeholder='********'
-                            onChange={ (e) => setPassword(e.target.value)}
+                            onChange={handleChange}
                         />
                     </label><br />
 
-                    <label>
+                    <label>Client
                         <input name='role'
                             type='radio' 
                             value='client' 
-                            onChange={onchange}
-                            checked={role === 'client'}
+                            onChange={handleChange}
+                            checked={formValues.role === 'client'}
                         />
                     </label>
-                    <label>
+                    <label>Instructor
                         <input name='role'
                             type='radio' 
                             value='instructor' 
-                            onChange={onchange}
-                            checked={role === 'instructor'}
+                            onChange={handleChange}
+                            checked={formValues.role === 'instructor'}
                         />
                     </label><br />
                     
                     <label>
-                        <button type="submit" disabled={!validateForm()}>login</button>
+                        <button type="submit" >login</button>
                     </label>
 
                 </div>
