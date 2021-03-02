@@ -2,6 +2,18 @@ import { React, useState, useEffect }  from "react";
 import * as yup from "yup";
 
 
+const Input = ({id, type, label, value, onChange, errors}) => {
+    return (
+        <div>
+            <label for={id}>{label}</label>
+            <br></br>
+            <input name={id} id={id} type={type} onChange={onChange} value={value}/>
+            <p style={{color: "red"}}>{errors}</p>
+            <br></br>
+        </div>
+    )
+}
+
 function Register() {
 
     const defaultData = {
@@ -22,22 +34,16 @@ function Register() {
         auth: ""
     }
 
-    
-
-    
-
     const [formData, setFormData] = useState(defaultData)
     const [formErrors, setFormErrors] = useState(defaultErrors)
     const [submitDisabled, setSubmitDisabled] = useState(false)
     const [authRequired, setAuthRequired] = useState(false)
 
-    const authReqSchema = yup.string().required("You need an auth code to create an instructor account")
-
     const schema = yup.object().shape({
         username: yup
             .string()
             .required("Please choose a username")
-            .min(2, "Usernames must be at least 2 characters long"),
+            .min(5, "Usernames must be at least 5 characters long"),
         email: yup
             .string()
             .required("Please enter an email")
@@ -56,19 +62,27 @@ function Register() {
             .required("Please choose an account type"),
         auth: yup
             .string()
-            .concat( authRequired ? authReqSchema : null)
+            .concat( authRequired ? yup.string().required("You need an auth code to create an instructor account") : null)
     })
 
     const updateErrors = (name, value) => {
         yup.reach(schema, name).validate(value)
             .then(() => setFormErrors({...formErrors, [name]: ""}))
-            // .catch((error) => console.log(error.errors[0]))
             .catch((error) => setFormErrors({...formErrors, [name]: error.errors[0]}))
     }
 
-    const change = event => {
+    const inputChange = event => {
         const { value, name } = event.target
-        if (name === "type") {updateAuth(value)}
+        updateErrors(name, value)
+        setFormData({
+            ...formData,
+            [name]: value
+        })
+    }
+
+    const typeChange = event => {
+        const { value, name } = event.target
+        updateAuth(value)
         updateErrors(name, value)
         setFormData({
             ...formData,
@@ -79,96 +93,79 @@ function Register() {
     const updateAuth = (value) => {
         if (value === "1") {
             setAuthRequired(true)
-            console.log("Auth value TRUE")
         } else {
             setAuthRequired(false)
-            console.log("Auth value FALSE")
         }
-    }
-
-    const submit = event => {
-        event.preventDefault()
-        //Do something with the data
-        console.log(formData)
-        //Temporary clear
-        setFormData(defaultData)
     }
 
     useEffect(() => {
         schema.isValid(formData).then(validSchema => setSubmitDisabled(!validSchema))
     }, [formData])
 
-    // useEffect(() => {
-    //     if (authRequired) {
-    //         setSchema(instructorSchema)
-    //     } else {
-    //         setSchema(studentSchema)
-    //     }
-    // }, [authRequired])
 
-    // const Field = (id, type, label) => {
-    //     return (
-    //         <div>
-    //             <label for={id}>Username</label>
-    //             <br></br>
-    //             <input name={id} id={id} type={type} onChange={change} value={formData.id}/>
-    //             <br></br>
-    //             <br></br>
-    //         </div>
-    //     )
-    // }
+
+    //>>>>>>>>>>>>>>>>>>>>>SUBMIT LOGIC HERE <<<<<<<<<<<<<<<<<<<< 
+
+    const submit = event => {
+        event.preventDefault()
+        //Do something with the data
+        console.log(formData)
+        //Temporary clearing after sumbission
+        setFormData(defaultData)
+    }
+    //>>>>>>>>>>>>>>>>>>>>>SUBMIT LOGIC HERE <<<<<<<<<<<<<<<<<<<< 
+
 
     return (
         <div>
+            <h2>Create your Anywhere Fitness account</h2>
             <form>
-                <label for="username">Username</label>
-                <br></br>
-                <input name="username" id="username" type="text" onChange={change} value={formData.username}/>
-                <p style={{color: "red"}}>{formErrors.username}</p>
-                <br></br>
-
-                {/* <Field id="username" type="text" label="Username"> */}
-
-
-                <label for="email">Email</label>
-                <br></br>
-                <input name="email" id="email" type="email" onChange={change} value={formData.email}/>
-                <p style={{color: "red"}}>{formErrors.email}</p>
-                <br></br>
-
-                <label for="password">Password</label>
-                <br></br>
-                <input name="password" id="password" type="password" onChange={change} value={formData.password}/>
-                <p style={{color: "red"}}>{formErrors.password}</p>
-                <br></br>
-
-                <label for="confirmPassword">Confirm Password</label>
-                <br></br>
-                <input name="confirmPassword" id="confirmPassword" type="password" onChange={change} value={formData.confirmPassword}/>
-                <p style={{color: "red"}}>{formErrors.confirmPassword}</p>
-                <br></br>
-
                 <label for="type">Account Type</label>
                 <br></br>
-                <select name="type" id="type" onChange={change} value={formData.type}>
+                <select name="type" id="type" onChange={typeChange} value={formData.type}>
                     <option value="">Select an account type</option>
                     <option value="1">Instructor</option>
                     <option value="2">Student</option>
                 </select>
                 <p style={{color: "red"}}>{formErrors.type}</p>
                 <br></br>
-                
-                <div style={{ display: authRequired ? "block" : "none" }}>
-                    <label for="auth">Auth Code (only for instructors)</label>
-                    <br></br>
-                    <input name="auth" id="auth" type="text" onChange={change} value={formData.auth}/>
-                    <p style={{color: "red"}}>{formErrors.auth}</p>
-                    <br></br>
-                </div>
-                
 
-                <input type="submit" onSubmit={submit} disabled={submitDisabled}/>
-
+                <Input 
+                    id="username" 
+                    type="text" 
+                    label="Username" 
+                    value={formData.username} 
+                    onChange={inputChange} 
+                    errors={formErrors.username}/>
+                <Input 
+                    id="email" 
+                    type="email" 
+                    label="Email" 
+                    value={formData.email} 
+                    onChange={inputChange} 
+                    errors={formErrors.email}/>
+                <Input 
+                    id="password" 
+                    type="password" 
+                    label="Password" 
+                    value={formData.password} 
+                    onChange={inputChange} 
+                    errors={formErrors.password}/>
+                <Input 
+                    id="confirmPassword" 
+                    type="password" 
+                    label="Confirm Password" 
+                    value={formData.confirmPassword} 
+                    onChange={inputChange} 
+                    errors={formErrors.confirmPassword}/>
+                {authRequired && <Input 
+                    id="auth" 
+                    type="text" 
+                    label="Auth Code" 
+                    value={formData.auth} 
+                    onChange={inputChange} 
+                    errors={formErrors.auth}/>}    
+                <input type="submit" onSubmit={submit} disabled={submitDisabled} value="Create Account"/>
             </form>
 
         </div>
