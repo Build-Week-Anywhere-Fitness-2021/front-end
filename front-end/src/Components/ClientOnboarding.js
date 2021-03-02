@@ -1,11 +1,11 @@
 import React from 'react';
-import { Switch, Route, useHistory} from 'react-router-dom';
+import { Switch, Route, Link, useHistory} from 'react-router-dom';
 
 function PageOne(){
     const history = useHistory();
     const routeToPage2 = () =>{
         console.log('history', history)
-        history.push('/instructor-onboarding/page2')
+        history.push('/client-onboarding/page2')
     }
     return(
         <div>
@@ -18,7 +18,7 @@ function PageTwo(){
     const history = useHistory();
     const routeToPage3 = () =>{
         console.log('history', history)
-        history.push('/instructor-onboarding/page3')
+        history.push('/client-onboarding/page3')
     }
     return(
         <div>
@@ -35,7 +35,7 @@ function PageThree(){
     )
 }
 
-export default function InstructorOnboarding() {
+export default function ClientOnboarding() {
     const history = useHistory();
     const routeToHome = () =>{
         console.log('history', history)
@@ -46,13 +46,13 @@ export default function InstructorOnboarding() {
             <div onClick = {routeToHome} className="home-button">Exit</div>
 
             <Switch>
-            <Route path = '/instructor-onboarding/page3'>
+            <Route path = '/client-onboarding/page3'>
                     <PageThree />
                 </Route>
-                <Route path = '/instructor-onboarding/page2'>
+                <Route path = '/client-onboarding/page2'>
                     <PageTwo />
                 </Route>
-                <Route path = '/instructor-onboarding'>
+                <Route path = '/client-onboarding'>
                     <PageOne />
                 </Route>
             </Switch>
