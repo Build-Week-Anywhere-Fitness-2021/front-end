@@ -1,5 +1,16 @@
 import React from 'react';
 import { Switch, Route, useHistory} from 'react-router-dom';
+import styled from 'styled-components'
+
+const StyledOnboarding = styled.div`
+    .onboarding-title {
+        color: #ff7b25;
+        margin: 2%;
+    }
+    .oboarding-button {
+        margin:2%;
+    }
+`
 
 function PageOne(){
     const history = useHistory();
@@ -8,7 +19,7 @@ function PageOne(){
         history.push('/instructor-onboarding/page2')
     }
     return(
-        <div>
+        <StyledOnboarding>
             <h1 className = 'onboarding-title'>Page 1</h1>
             <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse magna augue, faucibus ut viverra sit amet, scelerisque eu velit. 
@@ -19,7 +30,7 @@ function PageOne(){
             ringilla ultricies. In ultrices suscipit orci a lobortis
             </p>
             <div onClick = {routeToPage2} className="oboarding-button">Next</div>
-        </div>
+        </StyledOnboarding>
     )
 }
 function PageTwo(){
