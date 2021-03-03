@@ -1,6 +1,11 @@
+//STYLING IMPORTS
+import "../App.css";
+
+//TECH IMPORTS 
 import { React, useState, useEffect }  from "react";
 import * as yup from "yup";
-
+import { Link, useHistory } from "react-router-dom";
+import axiosWithAuth from "../Helpers/axiosWithAuth";
 
 const Input = ({id, type, label, value, onChange, errors}) => {
     return (
@@ -16,13 +21,15 @@ const Input = ({id, type, label, value, onChange, errors}) => {
 
 function Register() {
 
+    const history=useHistory();
+
     const defaultData = {
         username: "",
         email: "",
         password: "",
-        confirmPassword: "",
-        type: "",
-        auth: ""
+        // confirmPassword: "",
+        role: "",
+        // auth: ""
     }
 
     const defaultErrors = {
@@ -30,7 +37,7 @@ function Register() {
         email: "",
         password: "",
         confirmPassword: "",
-        type: "",
+        role: "",
         auth: ""
     }
 
@@ -56,7 +63,7 @@ function Register() {
             .string()
             .required("Please confirm the password")
             .oneOf([formData.password],"The passwords don't match"),
-        type: yup
+        role: yup
             .string()
             .oneOf(["1","2"], "Please choose an account type")
             .required("Please choose an account type"),
@@ -91,7 +98,7 @@ function Register() {
     }
 
     const updateAuth = (value) => {
-        if (value === "1") {
+        if (value === "instructor") {
             setAuthRequired(true)
         } else {
             setAuthRequired(false)
@@ -108,24 +115,38 @@ function Register() {
 
     const submit = event => {
         event.preventDefault()
-        //Do something with the data
         console.log(formData)
+        axiosWithAuth()
+        .post("/api/auth/register", formData)
+        .then((res)=>{
+            console.log("CREATE ACCOUNT SUBMISSION SUCCESS", res);
+            if (formData.role==="1"){
+                history.push("/instructor-onboarding")
+            } else if (formData.role==="2"){
+                history.push("/client-onboarding")
+            }
+        })
+        .catch((err)=>{
+            console.log("FAILED TO SUBMIT REGISTRATION", err);
+        })
         //Temporary clearing after sumbission
-        setFormData(defaultData)
+        // setFormData(defaultData)
     }
     //>>>>>>>>>>>>>>>>>>>>>SUBMIT LOGIC HERE <<<<<<<<<<<<<<<<<<<< 
-
-
+    
     return (
-        <div>
+        <div className="registerPageMainDiv">
             <h2>Create your Anywhere Fitness account</h2>
-            <form>
-                <label for="type">Account Type</label>
+            <Link to="/">Home</Link>
+            <Link to="/">Login</Link>
+            <Link to="/register">Register</Link>
+            <form onSubmit={submit}>
+                <label htmlFor="role">Account Role</label>
                 <br></br>
-                <select name="type" id="type" onChange={typeChange} value={formData.type}>
+                <select name="role" id="role" onChange={typeChange} value={formData.role}>
                     <option value="">Select an account type</option>
-                    <option value="1">Instructor</option>
-                    <option value="2">Student</option>
+                    <option value="instructor">Instructor</option>
+                    <option value="student">Student</option>
                 </select>
                 <p style={{color: "red"}}>{formErrors.type}</p>
                 <br></br>
@@ -151,25 +172,25 @@ function Register() {
                     value={formData.password} 
                     onChange={inputChange} 
                     errors={formErrors.password}/>
-                <Input 
+                {/* <Input 
                     id="confirmPassword" 
                     type="password" 
                     label="Confirm Password" 
                     value={formData.confirmPassword} 
                     onChange={inputChange} 
-                    errors={formErrors.confirmPassword}/>
-                {authRequired && <Input 
+                    errors={formErrors.confirmPassword}/> */}
+                {/* {authRequired && <Input 
                     id="auth" 
                     type="text" 
                     label="Auth Code" 
                     value={formData.auth} 
                     onChange={inputChange} 
-                    errors={formErrors.auth}/>}    
-                <input type="submit" onSubmit={submit} disabled={submitDisabled} value="Create Account"/>
+                    errors={formErrors.auth}/>}     */}
+                <input type="submit" value="Create Account"/>
             </form>
 
         </div>
     )
 }
-
+//took disabled={disabled} out of last input above 
 export default Register

@@ -1,1 +1,14 @@
 /* GENERAL STYLING WITHIN INDEX CSS */
+html {
+    background: linear-gradient(to bottom right,  #6B5B95, #FF7B25, #FEB236, #fff);
+}
+a, link {
+    margin: 1rem;
+    font-size: 1.8rem;
+    text-decoration: none;
+    color: white;
+}
+.registerPageMainDiv {
+    font-size: 1.8rem;
+    color: white;
+}
