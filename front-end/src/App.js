@@ -1,4 +1,7 @@
 import React from "react";
+
+import Login from "./Components/Login";
+
 import {Switch, Route} from 'react-router-dom';
 import InstructorOnboarding from './Components/InstructorOnboarding'
 import ClientOnboarding from './Components/ClientOnboarding'
