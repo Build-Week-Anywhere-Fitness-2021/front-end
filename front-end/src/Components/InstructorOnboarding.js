@@ -13,11 +13,11 @@ const StyledOnboarding = styled.div`
         size: 25%;
         font-size: 2.5em;
         color: #6B5B95;
-        text-decoration: underline;
+        text-decoration:underline;
     }
     .onboarding-content{
         margin:2%;
-        font-size: 2em;
+        font-size:2em;
     }
 
 `
