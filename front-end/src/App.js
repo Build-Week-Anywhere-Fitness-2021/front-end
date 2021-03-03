@@ -18,10 +18,9 @@ function App() {
         </Route>
         <Route exact path = '/'>
           <h1>Anywhere Fitness - Making Fitness Easy</h1>
+          <Register/>
         </Route>
       </Switch>
-      <h1>Anywhere Fitness - Making Fitness Easy</h1>
-      <Register/>
     </div>
   );
 }
