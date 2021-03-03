@@ -3,6 +3,9 @@ import {useState, Route} from 'react';
 import {useHistory} from 'react-router-dom';
 import styled, {createGlobalStyle, css} from 'styled-components';
 
+
+//STYLING 
+
 const GlobalStyle = createGlobalStyle`
     html {
         height: 100%;        
@@ -98,7 +101,9 @@ const StyledButton = styled.button`
     }
 `;
 
+//STYLING END
 
+//BEGIN FUNCTIONAL CODE
 
 
 const initialValues = {
@@ -128,11 +133,9 @@ function Login() {
 
         if (formValues.role === 'client') {
             history.push("/find-class");
-            <Route path="/find-class"  />
         } else if
         (formValues === 'instructor') {
             history.push("/create-class");
-            <Route path="/create-class" />
         }
     }
 
