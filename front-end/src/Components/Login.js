@@ -164,7 +164,7 @@ function Login() {
                 <StyledForm onSubmit={onSubmit}>
                     <h2>Login</h2>
                     
-                    <label>Username
+                    <label htmlFor="username">Username
                         <StyledInput name='name'
                             type='text'
                             value={formValues.username}
