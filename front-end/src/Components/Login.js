@@ -1,7 +1,10 @@
+//TECH IMPORTS 
+
 import React from 'react';
 import {useState, Route} from 'react';
 import {useHistory} from 'react-router-dom';
 import styled, {createGlobalStyle, css} from 'styled-components';
+import axiosWithAuth from '../Helpers/axiosWithAuth';
 
 
 //STYLING 
@@ -116,27 +119,40 @@ function Login() {
     const [formValues, setFormValues] = useState(initialValues);
     const history = useHistory();
 
-    const inputChange = (name, value) => {
-        setFormValues({
+    //DONT BELIEVE THIS IS NEEDED BUT JUST COMMENTING OUT FOR NOW JUST IN-CASE
+    // const inputChange = (name, value) => {
+    //     setFormValues({
             
-            [name]: value
-        })
-    }
+    //         [name]: value
+    //     })
+    // }
     const handleChange = e => {
-        const {name, value} = e.target;
-        inputChange(name, value)
+        const {name, value, type, checked} = e.target;
+        
+        const valueToUse= type === "radio" ? checked : value 
+        setFormValues({
+            ...formValues, [name]: value
+        })
 
     }
     
     const onSubmit = e => {
         e.preventDefault()
-
-        if (formValues.role === 'client') {
-            history.push("/find-class");
-        } else if
-        (formValues === 'instructor') {
-            history.push("/create-class");
-        }
+        axiosWithAuth()
+        .post("/api/auth/login", formValues)
+        .then((res)=>{
+            console.log("LOGIN SUCCESS", res);
+            localStorage.setItem("token", JSON.stringify(res.data.payload))
+            if (formValues.role === 'client') {
+                history.push("/find-class");
+            } else if
+            (formValues === 'instructor') {
+                history.push("/create-class");
+            }
+        })
+        .catch((err)=>{
+            console.log("LOGIN SUBMISSION FAILED", err);
+        })
     }
 
 
@@ -145,11 +161,11 @@ function Login() {
            <GlobalStyle />
            <StyledFormWrapper>
                 
-                <StyledForm>
+                <StyledForm onSubmit={onSubmit}>
                     <h2>Login</h2>
                     
-                    <label>Username
-                        <StyledInput name='name'
+                    <label htmlFor="username">Username
+                        <StyledInput name='username'
                             type='text'
                             value={formValues.username}
                             placeholder='username..'
@@ -157,7 +173,7 @@ function Login() {
                         />
                     </label>
                     
-                    <label>Password
+                    <label htmlFor="password">Password
                         <StyledInput name='password'
                             type='password'
                             value={formValues.password}
@@ -186,7 +202,7 @@ function Login() {
                     </label>
                     </StyledFieldset>
                     
-                    <StyledButton type="submit" onSubmit={onSubmit}>Login</StyledButton>
+                    <StyledButton type="submit">Login</StyledButton>
                     
         
                 </StyledForm>

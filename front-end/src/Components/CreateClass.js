@@ -1,14 +1,18 @@
 //TECH IMPORTS 
 
 import React, { useState, useReducer } from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { initialState, reducer } from "../Reducer/reducer";
 
 //HELPER IMPORTS 
 import { createClass, updateClass, deleteClass } from "../Actions/actions";
 import axiosWithAuth from "../Helpers/axiosWithAuth";
+import { initialState, reducer } from "../Reducers/reducers";
+
 
 const CreateClass = () => {
+
+const history = useHistory();
   //UPON SUBMIT, SET STATE INTO CLASSES ARRAY
   const [classes, setClasses] = useState([]);
   const [newClassFormValues, setNewClassFormValues] = useState({
@@ -46,12 +50,16 @@ const CreateClass = () => {
     axiosWithAuth()
       .post("/api/auth/instructor/classes", classes)
       .then((res) => {
-        console.log(res);
+        console.log("SUCCESSFULLY SUBMITTED CREATED CLASS", res);
       })
       .catch((err) => {
-        console.log(err);
+        console.log("FAILED TO SUBMIT CREATED CLASS", err);
       });
   };
+
+  const editClass= (classToBeEdited) => {
+    history.push("/update-class");
+  }
 
   const deleteClass = (classToBeDeleted) => {
     axiosWithAuth()
@@ -209,6 +217,8 @@ const CreateClass = () => {
             <p>Max Number Of Attendees: {cls.maxRegistered}</p>
             <p>Class Date: {cls.date}</p>
             <p>Class ID: {cls.id}</p>
+            <button onClick={editClass} >Edit</button>
+            <button onClick={deleteClass} >Delete</button>
           </AllClasses>
         );
       })}
@@ -223,12 +233,15 @@ const CreateClassDiv = styled.div`
   flex-direction: column;
   align-items: center;
   font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
   input,
   label {
     margin: 1rem;
   }
   input {
-    border-radius: 0.75rem;
+    border-radius: 1rem;
+    border: .5rem ridge white;
   }
 `;
 const CreateClassForm = styled.form`
@@ -246,6 +259,16 @@ const AllClasses = styled.div`
   box-shadow: 2rem 2rem 3rem 0rem black;
   font-size: 1.5rem;
   margin: 1.5rem;
+  color: white;
+  font-weight: bold;
+  p {
+    padding: 1rem;
+    border-bottom: .5rem ridge black;
+  }
+  button {
+    margin: .5rem;
+    border-radius: 1rem;
+  }
 `;
 
 //EXPORTS

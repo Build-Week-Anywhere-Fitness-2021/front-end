@@ -10,6 +10,9 @@ import Login from "./Components/Login";
 import InstructorOnboarding from './Components/InstructorOnboarding'
 import ClientOnboarding from './Components/ClientOnboarding'
 import Register from "./Components/Register"
+import CreateClass from "./Components/CreateClass";
+import UpdateClass from "./Components/UpdateClass";
+import FindClass from "./Components/FindClass";
 
 
 function App() {
@@ -25,6 +28,15 @@ function App() {
         </Route>
         <Route path = "/register">
           <Register />
+        </Route>
+        <Route path="/create-class">
+          <CreateClass />
+        </Route>
+        <Route path="/update-class">
+          <UpdateClass />
+        </Route>
+        <Route path="/find-class">
+          <FindClass />
         </Route>
         <Route exact path ='/'>
           <h1>Anywhere Fitness - Making Fitness Easy</h1>
