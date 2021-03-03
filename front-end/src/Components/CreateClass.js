@@ -224,12 +224,14 @@ const CreateClassDiv = styled.div`
   flex-direction: column;
   align-items: center;
   font-size: 1.5rem;
+  color: white;
   input,
   label {
     margin: 1rem;
   }
   input {
-    border-radius: 0.75rem;
+    border-radius: 1rem;
+    border: .5rem ridge white;
   }
 `;
 const CreateClassForm = styled.form`
@@ -247,6 +249,12 @@ const AllClasses = styled.div`
   box-shadow: 2rem 2rem 3rem 0rem black;
   font-size: 1.5rem;
   margin: 1.5rem;
+  color: white;
+  font-weight: bold;
+  p {
+    padding: 1rem;
+    border-bottom: .5rem ridge black;
+  }
 `;
 
 //EXPORTS

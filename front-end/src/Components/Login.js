@@ -142,6 +142,7 @@ function Login() {
         .post("/api/auth/login", formValues)
         .then((res)=>{
             console.log("LOGIN SUCCESS", res);
+            localStorage.setItem("token", JSON.stringify(res.data.payload))
             if (formValues.role === 'client') {
                 history.push("/find-class");
             } else if

@@ -4,7 +4,8 @@ import "../App.css";
 //TECH IMPORTS 
 import { React, useState, useEffect }  from "react";
 import * as yup from "yup";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import axiosWithAuth from "../Helpers/axiosWithAuth";
 
 const Input = ({id, type, label, value, onChange, errors}) => {
     return (
@@ -19,6 +20,8 @@ const Input = ({id, type, label, value, onChange, errors}) => {
 }
 
 function Register() {
+
+    const history=useHistory();
 
     const defaultData = {
         username: "",
@@ -112,13 +115,23 @@ function Register() {
 
     const submit = event => {
         event.preventDefault()
-        //Do something with the data
-        console.log(formData)
+        axiosWithAuth()
+        .post("/api/auth/register", formData)
+        .then((res)=>{
+            console.log("CREATE ACCOUNT SUBMISSION SUCCESS", res);
+            if (formData.type==="1"){
+                history.push("/instructor-onboarding")
+            } else if (formData.type==="2"){
+                history.push("/client-onboarding")
+            }
+        })
+        .catch((err)=>{
+            console.log("FAILED TO SUBMIT REGISTRATION", err);
+        })
         //Temporary clearing after sumbission
-        setFormData(defaultData)
+        // setFormData(defaultData)
     }
     //>>>>>>>>>>>>>>>>>>>>>SUBMIT LOGIC HERE <<<<<<<<<<<<<<<<<<<< 
-
 
     return (
         <div className="registerPageMainDiv">
@@ -126,8 +139,8 @@ function Register() {
             <Link to="/">Home</Link>
             <Link to="/">Login</Link>
             <Link to="/register">Register</Link>
-            <form>
-                <label for="type">Account Type</label>
+            <form onSubmit={submit}>
+                <label htmlFor="type">Account Type</label>
                 <br></br>
                 <select name="type" id="type" onChange={typeChange} value={formData.type}>
                     <option value="">Select an account type</option>
@@ -172,7 +185,7 @@ function Register() {
                     value={formData.auth} 
                     onChange={inputChange} 
                     errors={formErrors.auth}/>}    
-                <input type="submit" onSubmit={submit} disabled={submitDisabled} value="Create Account"/>
+                <input type="submit" disabled={submitDisabled} value="Create Account"/>
             </form>
 
         </div>
