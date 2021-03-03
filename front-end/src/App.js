@@ -1,4 +1,7 @@
 import React from "react";
+
+import Login from "./Components/Login";
+
 import {Switch, Route} from 'react-router-dom';
 import InstructorOnboarding from './Components/InstructorOnboarding'
 import ClientOnboarding from './Components/ClientOnboarding'
@@ -21,7 +24,11 @@ function App() {
         </Route>
       </Switch>
       <h1>Anywhere Fitness - Making Fitness Easy</h1>
+
+      <Login />
+
       <Register/>
+
     </div>
   );
 }
