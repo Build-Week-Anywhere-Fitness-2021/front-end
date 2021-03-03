@@ -119,15 +119,20 @@ function Login() {
     const [formValues, setFormValues] = useState(initialValues);
     const history = useHistory();
 
-    const inputChange = (name, value) => {
-        setFormValues({
+    //DONT BELIEVE THIS IS NEEDED BUT JUST COMMENTING OUT FOR NOW JUST IN-CASE
+    // const inputChange = (name, value) => {
+    //     setFormValues({
             
-            [name]: value
-        })
-    }
+    //         [name]: value
+    //     })
+    // }
     const handleChange = e => {
-        const {name, value} = e.target;
-        inputChange(name, value)
+        const {name, value, type, checked} = e.target;
+        
+        const valueToUse= type === "radio" ? checked : value 
+        setFormValues({
+            ...formValues, [name]: valueToUse
+        })
 
     }
     
@@ -155,7 +160,7 @@ function Login() {
            <GlobalStyle />
            <StyledFormWrapper>
                 
-                <StyledForm>
+                <StyledForm onSubmit={onSubmit}>
                     <h2>Login</h2>
                     
                     <label>Username
@@ -196,7 +201,7 @@ function Login() {
                     </label>
                     </StyledFieldset>
                     
-                    <StyledButton type="submit" onSubmit={onSubmit}>Login</StyledButton>
+                    <StyledButton type="submit">Login</StyledButton>
                     
         
                 </StyledForm>
