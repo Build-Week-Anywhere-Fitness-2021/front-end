@@ -1,7 +1,10 @@
+//TECH IMPORTS 
+
 import React from 'react';
 import {useState, Route} from 'react';
 import {useHistory} from 'react-router-dom';
 import styled, {createGlobalStyle, css} from 'styled-components';
+import axiosWithAuth from '../Helpers/axiosWithAuth';
 
 
 //STYLING 
@@ -130,13 +133,20 @@ function Login() {
     
     const onSubmit = e => {
         e.preventDefault()
-
-        if (formValues.role === 'client') {
-            history.push("/find-class");
-        } else if
-        (formValues === 'instructor') {
-            history.push("/create-class");
-        }
+        axiosWithAuth()
+        .post("/api/auth/login", formValues)
+        .then((res)=>{
+            console.log("LOGIN SUCCESS", res);
+            if (formValues.role === 'client') {
+                history.push("/find-class");
+            } else if
+            (formValues === 'instructor') {
+                history.push("/create-class");
+            }
+        })
+        .catch((err)=>{
+            console.log("LOGIN SUBMISSION FAILED", err);
+        })
     }
 
 

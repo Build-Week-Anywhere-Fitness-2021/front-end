@@ -59,3 +59,5 @@ const FindClass = () => {
     </div>
   );
 };
+
+export default FindClass;

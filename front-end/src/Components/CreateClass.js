@@ -2,11 +2,12 @@
 
 import React, { useState, useReducer } from "react";
 import styled from "styled-components";
-import { initialState, reducer } from "../Reducer/reducer";
 
 //HELPER IMPORTS 
 import { createClass, updateClass, deleteClass } from "../Actions/actions";
 import axiosWithAuth from "../Helpers/axiosWithAuth";
+import { initialState, reducer } from "../Reducers/reducers";
+
 
 const CreateClass = () => {
   //UPON SUBMIT, SET STATE INTO CLASSES ARRAY
