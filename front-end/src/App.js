@@ -1,8 +1,12 @@
+//STYLING IMPORTS
+import "../src/App.css";
+
+//TECH IMPORTS 
 import React from "react";
+import {Switch, Route, Link} from 'react-router-dom';
 
+//COMP IMPORTS 
 import Login from "./Components/Login";
-
-import {Switch, Route} from 'react-router-dom';
 import InstructorOnboarding from './Components/InstructorOnboarding'
 import ClientOnboarding from './Components/ClientOnboarding'
 import Register from "./Components/Register"
@@ -19,16 +23,17 @@ function App() {
         <Route path = '/instructor-onboarding'>
           <InstructorOnboarding />
         </Route>
-        <Route exact path = '/'>
+        <Route path = "/register">
+          <Register />
+        </Route>
+        <Route exact path ='/'>
           <h1>Anywhere Fitness - Making Fitness Easy</h1>
+          <Link to="/">Home</Link>
+          <Link to="/">Login</Link>
+          <Link to="/register">Register</Link>
+          <Login />
         </Route>
       </Switch>
-      <h1>Anywhere Fitness - Making Fitness Easy</h1>
-
-      <Login />
-
-      <Register/>
-
     </div>
   );
 }

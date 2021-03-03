@@ -1,6 +1,10 @@
+//STYLING IMPORTS
+import "../App.css";
+
+//TECH IMPORTS 
 import { React, useState, useEffect }  from "react";
 import * as yup from "yup";
-
+import { Link } from "react-router-dom";
 
 const Input = ({id, type, label, value, onChange, errors}) => {
     return (
@@ -117,8 +121,11 @@ function Register() {
 
 
     return (
-        <div>
+        <div className="registerPageMainDiv">
             <h2>Create your Anywhere Fitness account</h2>
+            <Link to="/">Home</Link>
+            <Link to="/">Login</Link>
+            <Link to="/register">Register</Link>
             <form>
                 <label for="type">Account Type</label>
                 <br></br>
