@@ -6,7 +6,7 @@ import styled, {createGlobalStyle, css} from 'styled-components';
 const GlobalStyle = createGlobalStyle`
     html {
         height: 100%;        
-        background: linear-gradient(to bottom right,  #6B5B95, #FF7B25, #FEB236);
+        background: linear-gradient(to bottom right,  #6B5B95, #FF7B25, #FEB236, #fff);
 
     }
     body {
