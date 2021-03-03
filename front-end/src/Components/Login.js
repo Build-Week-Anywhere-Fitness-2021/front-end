@@ -131,7 +131,7 @@ function Login() {
         
         const valueToUse= type === "radio" ? checked : value 
         setFormValues({
-            ...formValues, [name]: valueToUse
+            ...formValues, [name]: value
         })
 
     }
@@ -165,7 +165,7 @@ function Login() {
                     <h2>Login</h2>
                     
                     <label htmlFor="username">Username
-                        <StyledInput name='name'
+                        <StyledInput name='username'
                             type='text'
                             value={formValues.username}
                             placeholder='username..'
@@ -173,7 +173,7 @@ function Login() {
                         />
                     </label>
                     
-                    <label>Password
+                    <label htmlFor="password">Password
                         <StyledInput name='password'
                             type='password'
                             value={formValues.password}
