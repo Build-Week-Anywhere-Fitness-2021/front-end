@@ -26,10 +26,11 @@ const CreateClass = () => {
     registered: "",
     maxRegistered: "",
     date: "",
-    // id: "",
-    // isRegistered: true,
-    // isLoggedIn: true
   });
+  //taken out of state above
+  // id: "",
+  // isRegistered: true,
+  // isLoggedIn: true
 
   //REDUCER / INITIAL STATE
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -49,6 +50,7 @@ const CreateClass = () => {
     event.preventDefault();
     setClasses([...classes, newClassFormValues]);
     console.log(classes);
+    console.log(newClassFormValues);
     axiosWithAuth()
       .post("/api/instructor", classes)
       .then((res) => {
@@ -228,7 +230,7 @@ const CreateClass = () => {
             <p>Number Of People Registered: {cls.registered}</p>
             <p>Max Number Of Attendees: {cls.maxRegistered}</p>
             <p>Class Date: {cls.date}</p>
-            <p>Class ID: {cls.id}</p>
+            {/* <p>Class ID: {cls.id}</p> */}
             <button onClick={editClass} >Edit</button>
             <button onClick={deleteClass} >Delete</button>
           </AllClasses>
