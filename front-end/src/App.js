@@ -32,7 +32,7 @@ function App() {
         <Route path="/create-class">
           <CreateClass />
         </Route>
-        <Route path="/update-class">
+        <Route path="/update-class/:id">
           <UpdateClass />
         </Route>
         <Route path="/find-class">

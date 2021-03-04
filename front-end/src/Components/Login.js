@@ -142,13 +142,8 @@ function Login() {
         .post("/api/auth/login", formValues)
         .then((res)=>{
             console.log("LOGIN SUCCESS", res);
-            localStorage.setItem("token", JSON.stringify(res.data.payload))
-            if (formValues.role === 'client') {
-                history.push("/find-class");
-            } else if
-            (formValues === 'instructor') {
-                history.push("/create-class");
-            }
+            localStorage.setItem("token", JSON.stringify(res.data.authToken))
+            return res.config.data.role=== 'client' ? history.push("/find-class") : history.push("/create-class")
         })
         .catch((err)=>{
             console.log("LOGIN SUBMISSION FAILED", err);

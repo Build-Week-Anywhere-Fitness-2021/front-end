@@ -1,6 +1,7 @@
 //TECH IMPORTS 
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useParams } from "react-router-dom";
 
 //HELPER IMPORTS 
 import axiosWithAuth from "../Helpers/axiosWithAuth";
@@ -24,10 +25,12 @@ const initialClassState = {
 const UpdateClass = (props) => {
   const [classToBeEdited, setClassToBeEdited] = useState(initialClassState);
 
+  const params = useParams();
+
   //EFFECT LOADS CLASS UPON COMPONENT RENDER, THIS IS THE CLASS THAT GETS EDITED
   useEffect(() => {
     axiosWithAuth()
-      .get("/api/auth/users/classes/:id")
+      .get(`/api/users/${params.id}`)
       .then((res) => {
         console.log("SUCCEEDED LOADING CLASS TO EDIT", res);
         setClassToBeEdited(res.data);
@@ -35,7 +38,7 @@ const UpdateClass = (props) => {
       .catch((err) => {
         console.log("ERROR LOADING CLASS TO EDIT", err);
       });
-  }, []);
+  }, [params]);
 
   //HANDLES CHANGES ON FORM FOR EDITING A CLASS
 
@@ -53,7 +56,7 @@ const UpdateClass = (props) => {
     event.preventDefault();
 
     axiosWithAuth()
-      .put(`/api/auth/instructor/classes/:id`, classToBeEdited)
+      .put(`/api/instructor/:id	`, classToBeEdited)
       .then((res) => {
         console.log("EDITED CLASS SUBMITTED SUCCESSFULLY", res);
         //ONCE INTEGRATED - make classes/setclasses application state and import through props
@@ -69,7 +72,7 @@ const UpdateClass = (props) => {
     <div>
       <EditClassDiv>
         <h2>Edit A Class</h2>
-        <EditClassForm>
+        <EditClassForm onSubmit={handleEditFormSubmit}>
           <label htmlFor="name">
             Class Name:
             <input

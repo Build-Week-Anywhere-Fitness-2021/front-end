@@ -1,7 +1,7 @@
 //TECH IMPORTS 
 
 import React, { useState, useReducer } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 //HELPER IMPORTS 
@@ -12,8 +12,9 @@ import { initialState, reducer } from "../Reducers/reducers";
 
 const CreateClass = () => {
 
-const history = useHistory();
-  //UPON SUBMIT, SET STATE INTO CLASSES ARRAY
+  //HOOKS & SLICES OF STATE
+  const history = useHistory();
+  const params=useParams();
   const [classes, setClasses] = useState([]);
   const [newClassFormValues, setNewClassFormValues] = useState({
     name: "",
@@ -25,9 +26,9 @@ const history = useHistory();
     registered: "",
     maxRegistered: "",
     date: "",
-    id: "",
-    isRegistered: true,
-    isLoggedIn: true
+    // id: "",
+    // isRegistered: true,
+    // isLoggedIn: true
   });
 
   //REDUCER / INITIAL STATE
@@ -47,8 +48,9 @@ const history = useHistory();
   const submitCreatedClass = (event) => {
     event.preventDefault();
     setClasses([...classes, newClassFormValues]);
+    console.log(classes);
     axiosWithAuth()
-      .post("/api/auth/instructor/classes", classes)
+      .post("/api/auth/instructor", classes)
       .then((res) => {
         console.log("SUCCESSFULLY SUBMITTED CREATED CLASS", res);
       })
@@ -57,10 +59,20 @@ const history = useHistory();
       });
   };
 
-  const editClass= (classToBeEdited) => {
-    history.push("/update-class");
+  //WHEN EDIT CLASS BUTTON ON AN INDIVIDUAL CLASS IS CLICKED, THIS FUNCTION EXPRESSION RUNS 
+  const editClass= () => {
+    axiosWithAuth()
+      .get(`/api/users/${newClassFormValues.id}`)
+      .then((res)=>{
+        console.log("SUCCESS GETTING INDIVIDUAL CLASS ID UPON CLICKING EDIT", res)
+      })
+      .catch((err)=>{
+        console.log("FAILURE GETTING INDIVIDUAL CLASS ID UPON CLICKING EDIT", err)
+      })
+    // history.push(`/update-class/${newClassFormValues.id}`);
   }
 
+  //WHEN DElETE CLASS BUTTON ON AN INDIVIDUAL CLASS IS CLICKED, THIS FUNCTION EXPRESSION RUNS 
   const deleteClass = (classToBeDeleted) => {
     axiosWithAuth()
       .delete(`/api/auth/instructor/classes/:id`, classToBeDeleted)
@@ -185,7 +197,7 @@ const history = useHistory();
             />
           </label>
 
-          <label htmlFor="id">
+          {/* <label htmlFor="id">
             Enter A Unique 3 Digit Number-ID:
             <input
               type="number"
@@ -195,7 +207,7 @@ const history = useHistory();
               value={newClassFormValues.id}
               onChange={createClassFormChange}
             />
-          </label>
+          </label> */}
 
           <button>Submit New Class</button>
         </CreateClassForm>

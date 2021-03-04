@@ -9,7 +9,7 @@ const FindClass = () => {
 
   useEffect(() => {
     axiosWithAuth()
-      .get("/api/auth/instructor/classes")
+      .get("/api/users")
       .then((res) => {
         console.log("SUCCEEDED GETTING CLASSES FOR USER TO FILTER", res);
         //finish below function based on whether res is an array already or not
