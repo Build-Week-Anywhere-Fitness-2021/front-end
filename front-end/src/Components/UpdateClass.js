@@ -30,7 +30,7 @@ const UpdateClass = (props) => {
   //EFFECT LOADS CLASS UPON COMPONENT RENDER, THIS IS THE CLASS THAT GETS EDITED
   useEffect(() => {
     axiosWithAuth()
-      .get(`/api/auth/users/classes/${params.id}`)
+      .get(`/api/users/${params.id}`)
       .then((res) => {
         console.log("SUCCEEDED LOADING CLASS TO EDIT", res);
         setClassToBeEdited(res.data);
@@ -38,7 +38,7 @@ const UpdateClass = (props) => {
       .catch((err) => {
         console.log("ERROR LOADING CLASS TO EDIT", err);
       });
-  }, [params.id]);
+  }, [params]);
 
   //HANDLES CHANGES ON FORM FOR EDITING A CLASS
 
@@ -56,7 +56,7 @@ const UpdateClass = (props) => {
     event.preventDefault();
 
     axiosWithAuth()
-      .put(`/api/auth/instructor/classes/:id`, classToBeEdited)
+      .put(`/api/instructor/:id	`, classToBeEdited)
       .then((res) => {
         console.log("EDITED CLASS SUBMITTED SUCCESSFULLY", res);
         //ONCE INTEGRATED - make classes/setclasses application state and import through props

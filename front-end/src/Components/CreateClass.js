@@ -26,9 +26,9 @@ const CreateClass = () => {
     registered: "",
     maxRegistered: "",
     date: "",
-    id: "",
-    isRegistered: true,
-    isLoggedIn: true
+    // id: "",
+    // isRegistered: true,
+    // isLoggedIn: true
   });
 
   //REDUCER / INITIAL STATE
@@ -48,8 +48,9 @@ const CreateClass = () => {
   const submitCreatedClass = (event) => {
     event.preventDefault();
     setClasses([...classes, newClassFormValues]);
+    console.log(classes);
     axiosWithAuth()
-      .post("/api/auth/instructor/classes", classes)
+      .post("/api/auth/instructor", classes)
       .then((res) => {
         console.log("SUCCESSFULLY SUBMITTED CREATED CLASS", res);
       })
@@ -60,7 +61,15 @@ const CreateClass = () => {
 
   //WHEN EDIT CLASS BUTTON ON AN INDIVIDUAL CLASS IS CLICKED, THIS FUNCTION EXPRESSION RUNS 
   const editClass= () => {
-    history.push(`/update-class/${newClassFormValues.id}`);
+    axiosWithAuth()
+      .get(`/api/users/${newClassFormValues.id}`)
+      .then((res)=>{
+        console.log("SUCCESS GETTING INDIVIDUAL CLASS ID UPON CLICKING EDIT", res)
+      })
+      .catch((err)=>{
+        console.log("FAILURE GETTING INDIVIDUAL CLASS ID UPON CLICKING EDIT", err)
+      })
+    // history.push(`/update-class/${newClassFormValues.id}`);
   }
 
   //WHEN DElETE CLASS BUTTON ON AN INDIVIDUAL CLASS IS CLICKED, THIS FUNCTION EXPRESSION RUNS 
@@ -188,7 +197,7 @@ const CreateClass = () => {
             />
           </label>
 
-          <label htmlFor="id">
+          {/* <label htmlFor="id">
             Enter A Unique 3 Digit Number-ID:
             <input
               type="number"
@@ -198,7 +207,7 @@ const CreateClass = () => {
               value={newClassFormValues.id}
               onChange={createClassFormChange}
             />
-          </label>
+          </label> */}
 
           <button>Submit New Class</button>
         </CreateClassForm>
