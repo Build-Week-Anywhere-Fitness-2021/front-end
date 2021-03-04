@@ -1,7 +1,7 @@
 //TECH IMPORTS 
 
 import React, { useState, useReducer } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 //HELPER IMPORTS 
@@ -12,8 +12,9 @@ import { initialState, reducer } from "../Reducers/reducers";
 
 const CreateClass = () => {
 
-const history = useHistory();
-  //UPON SUBMIT, SET STATE INTO CLASSES ARRAY
+  //HOOKS & SLICES OF STATE
+  const history = useHistory();
+  const params=useParams();
   const [classes, setClasses] = useState([]);
   const [newClassFormValues, setNewClassFormValues] = useState({
     name: "",
@@ -57,10 +58,12 @@ const history = useHistory();
       });
   };
 
-  const editClass= (classToBeEdited) => {
-    history.push("/update-class");
+  //WHEN EDIT CLASS BUTTON ON AN INDIVIDUAL CLASS IS CLICKED, THIS FUNCTION EXPRESSION RUNS 
+  const editClass= () => {
+    history.push(`/update-class/${newClassFormValues.id}`);
   }
 
+  //WHEN DElETE CLASS BUTTON ON AN INDIVIDUAL CLASS IS CLICKED, THIS FUNCTION EXPRESSION RUNS 
   const deleteClass = (classToBeDeleted) => {
     axiosWithAuth()
       .delete(`/api/auth/instructor/classes/:id`, classToBeDeleted)

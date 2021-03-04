@@ -10,7 +10,7 @@ import axiosWithAuth from "../Helpers/axiosWithAuth";
 const Input = ({id, type, label, value, onChange, errors}) => {
     return (
         <div>
-            <label for={id}>{label}</label>
+            <label htmlFor={id}>{label}</label>
             <br></br>
             <input name={id} id={id} type={type} onChange={onChange} value={value}/>
             <p style={{color: "red"}}>{errors}</p>
