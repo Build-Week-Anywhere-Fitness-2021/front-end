@@ -50,7 +50,7 @@ const CreateClass = () => {
     setClasses([...classes, newClassFormValues]);
     console.log(classes);
     axiosWithAuth()
-      .post("/api/auth/instructor", classes)
+      .post("/api/instructor", classes)
       .then((res) => {
         console.log("SUCCESSFULLY SUBMITTED CREATED CLASS", res);
       })
