@@ -120,11 +120,7 @@ function Register() {
         .post("/api/auth/register", formData)
         .then((res)=>{
             console.log("CREATE ACCOUNT SUBMISSION SUCCESS", res);
-            if (formData.role==="1"){
-                history.push("/instructor-onboarding")
-            } else if (formData.role==="2"){
-                history.push("/client-onboarding")
-            }
+            return res.config.data.role==="student" ? history.push("/client-onboarding") : history.push("/instructor-onboarding")
         })
         .catch((err)=>{
             console.log("FAILED TO SUBMIT REGISTRATION", err);
