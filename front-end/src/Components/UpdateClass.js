@@ -30,7 +30,7 @@ const UpdateClass = (props) => {
   //EFFECT LOADS CLASS UPON COMPONENT RENDER, THIS IS THE CLASS THAT GETS EDITED
   useEffect(() => {
     axiosWithAuth()
-      .get(`/api/users/${params.id}`)
+      .get(`/api/instructor/${params.classId}`)
       .then((res) => {
         console.log("SUCCEEDED LOADING CLASS TO EDIT", res);
         setClassToBeEdited(res.data);
@@ -199,7 +199,7 @@ const UpdateClass = (props) => {
   );
 };
 
-//STLED COMPONENTS FOR UPDATING / EDITING FORM
+//STYLED COMPONENTS FOR UPDATING / EDITING FORM
 const EditClassDiv = styled.div`
   display: flex;
   flex-direction: column;

@@ -64,9 +64,10 @@ const CreateClass = () => {
   //WHEN EDIT CLASS BUTTON ON AN INDIVIDUAL CLASS IS CLICKED, THIS FUNCTION EXPRESSION RUNS 
   const editClass= () => {
     axiosWithAuth()
-      .get(`/api/users/${newClassFormValues.id}`)
+      .get(`/api/instructor`)
       .then((res)=>{
         console.log("SUCCESS GETTING INDIVIDUAL CLASS ID UPON CLICKING EDIT", res)
+        history.push(`/update-class/${res.data[0].classId}`)
       })
       .catch((err)=>{
         console.log("FAILURE GETTING INDIVIDUAL CLASS ID UPON CLICKING EDIT", err)
@@ -77,7 +78,7 @@ const CreateClass = () => {
   //WHEN DElETE CLASS BUTTON ON AN INDIVIDUAL CLASS IS CLICKED, THIS FUNCTION EXPRESSION RUNS 
   const deleteClass = (classToBeDeleted) => {
     axiosWithAuth()
-      .delete(`/api/auth/instructor/classes/:id`, classToBeDeleted)
+      .delete(`/api/instructor:id`, classToBeDeleted)
       .then((res) => {
         console.log("SUCCESSFULLY DELETED CLASS", res);
       })
