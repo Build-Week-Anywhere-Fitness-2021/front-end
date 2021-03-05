@@ -142,7 +142,7 @@ function Login() {
         .post("/api/auth/login", formValues)
         .then((res)=>{
             console.log("LOGIN SUCCESS", res);
-            localStorage.setItem("token", JSON.stringify(res.data.authToken))
+            localStorage.setItem("token", JSON.stringify(res.data.token))
             return res.config.data.role=== 'client' ? history.push("/find-class") : history.push("/create-class")
         })
         .catch((err)=>{
