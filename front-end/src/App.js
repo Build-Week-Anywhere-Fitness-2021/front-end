@@ -2,7 +2,7 @@
 import "../src/App.css";
 
 //TECH IMPORTS 
-import React from "react";
+import React, { useState } from "react";
 import {Switch, Route, Link} from 'react-router-dom';
 
 //COMP IMPORTS 
@@ -17,6 +17,9 @@ import FindClass from "./Components/FindClass";
 
 function App() {
 
+  //had to bring this up to application state to be able to use in other components since requests aren't working to accomplish this purpose just yet, originally component state in CreateClass
+  const [classes, setClasses] = useState([]);
+
   return (
     <div>
       <Switch>
@@ -30,13 +33,13 @@ function App() {
           <Register />
         </Route>
         <Route path="/create-class">
-          <CreateClass />
+          <CreateClass classes={classes} setClasses={setClasses} />
         </Route>
         <Route path="/update-class/">
-          <UpdateClass />
+          <UpdateClass classes={classes} setClasses={setClasses} />
         </Route>
         <Route path="/find-class">
-          <FindClass />
+          <FindClass classes={classes} setClasses={setClasses} />
         </Route>
         <Route exact path ='/'>
           <h1>Anywhere Fitness - Making Fitness Easy</h1>

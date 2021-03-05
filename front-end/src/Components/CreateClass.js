@@ -10,12 +10,12 @@ import axiosWithAuth from "../Helpers/axiosWithAuth";
 import { initialState, reducer } from "../Reducers/reducers";
 
 
-const CreateClass = () => {
+const CreateClass = (props) => {
 
   //HOOKS & SLICES OF STATE
   const history = useHistory();
   const params=useParams();
-  const [classes, setClasses] = useState([]);
+  const { classes, setClasses }=props;
   const [newClassFormValues, setNewClassFormValues] = useState({
     name: "",
     type: "",
@@ -26,6 +26,7 @@ const CreateClass = () => {
     registered: "",
     maxRegistered: "",
     date: "",
+    id: "",
   });
   //taken out of state above
   // id: "",
@@ -55,6 +56,7 @@ const CreateClass = () => {
       .post("/api/instructor", classes)
       .then((res) => {
         console.log("SUCCESSFULLY SUBMITTED CREATED CLASS", res);
+        setClasses([...classes, newClassFormValues]);
       })
       .catch((err) => {
         console.log("FAILED TO SUBMIT CREATED CLASS", err);
@@ -200,7 +202,7 @@ const CreateClass = () => {
             />
           </label>
 
-          {/* <label htmlFor="id">
+          <label htmlFor="id">
             Enter A Unique 3 Digit Number-ID:
             <input
               type="number"
@@ -210,7 +212,7 @@ const CreateClass = () => {
               value={newClassFormValues.id}
               onChange={createClassFormChange}
             />
-          </label> */}
+          </label>
 
           <button>Submit New Class</button>
         </CreateClassForm>
@@ -231,7 +233,7 @@ const CreateClass = () => {
             <p>Number Of People Registered: {cls.registered}</p>
             <p>Max Number Of Attendees: {cls.maxRegistered}</p>
             <p>Class Date: {cls.date}</p>
-            {/* <p>Class ID: {cls.id}</p> */}
+            <p>Class ID: {cls.id}</p>
             <button onClick={editClass} >Edit</button>
             <button onClick={deleteClass} >Delete</button>
           </AllClasses>

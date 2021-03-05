@@ -23,22 +23,43 @@ const initialClassState = {
 };
 
 const UpdateClass = (props) => {
-  const [classToBeEdited, setClassToBeEdited] = useState(initialClassState);
-
+  const [classToBeEdited, setClassToBeEdited] = useState([]);
+  const [editId, setEditId]=useState("");
+  const { classes, setClasses }=props;
+  let emptyArray=[];
   const params = useParams();
 
-  //EFFECT LOADS CLASS UPON COMPONENT RENDER, THIS IS THE CLASS THAT GETS EDITED
-  useEffect(() => {
-    axiosWithAuth()
-      .get(`/api/instructor/${params.classId}`)
-      .then((res) => {
-        console.log("SUCCEEDED LOADING CLASS TO EDIT", res);
-        setClassToBeEdited(res.data);
-      })
-      .catch((err) => {
-        console.log("ERROR LOADING CLASS TO EDIT", err);
-      });
-  }, [params]);
+  //EFFECT LOADS CLASS UPON COMPONENT RENDER, THIS IS THE CLASS THAT GETS EDITED, TAKEN OUT BECAUSE COULDN"T GET REQUESTS PASSING AND RECEIVING DATA LIKE I NEEDED SO RESORTING TO APP STATE
+  // useEffect(() => {
+  //   axiosWithAuth()
+  //     .get(`/api/instructor/${params.classId}`)
+  //     .then((res) => {
+  //       console.log("SUCCEEDED LOADING CLASS TO EDIT", res);
+  //       setClassToBeEdited(res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log("ERROR LOADING CLASS TO EDIT", err);
+  //     });
+  // }, [params]);
+
+
+  //SETS SPECIFIC CLASS ID INTO STATE FOR EDITING, RECEIVED FROM ID ENTRY FORM BELOW
+
+  const handleEditIdEntry = (event) => {
+    setEditId(event.target.value);
+  }
+
+  //HANDLES SUBMISSION OF EDIT ID
+
+  const handleEditIdSubmit = (event) => {
+    event.preventDefault();
+    emptyArray=props.classes.filter((cls)=>{
+      return cls.id === editId
+    })
+    setClassToBeEdited(emptyArray)
+    console.log(emptyArray);
+    console.log(classToBeEdited);
+  }
 
   //HANDLES CHANGES ON FORM FOR EDITING A CLASS
 
@@ -70,6 +91,14 @@ const UpdateClass = (props) => {
   //BEGIN FUNCTIONAL COMPONENT RETURN
   return (
     <div>
+      <EditIdDiv>
+      <form onSubmit={handleEditIdSubmit}>
+        <label htmlFor="editId">Enter The ID Of The Class To Be Edited: 
+          <input name="editId" id="editId" type="number" value={editId} onChange={handleEditIdEntry} />
+        </label>
+        <button>Submit</button>
+      </form>
+      </EditIdDiv>
       <EditClassDiv>
         <h2>Edit A Class</h2>
         <EditClassForm onSubmit={handleEditFormSubmit}>
@@ -200,11 +229,25 @@ const UpdateClass = (props) => {
 };
 
 //STYLED COMPONENTS FOR UPDATING / EDITING FORM
+
+const EditIdDiv=styled.div`
+display: flex;
+justify-content: center;
+color: white;
+font-size: 1.5rem;
+font-weight: bold;
+input, label {
+  margin: 1rem;
+}
+`
+
 const EditClassDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   font-size: 1.5rem;
+  color: white;
+  font-weight: bold;
   input,
   label {
     margin: 1rem;
